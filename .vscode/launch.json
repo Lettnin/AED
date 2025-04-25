@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/lettn/OneDrive/Documentos/GitHub/EstudosDiv/AED",
-      "program": "c:/Users/lettn/OneDrive/Documentos/GitHub/EstudosDiv/AED/build/Debug/outDebug",
+      "cwd": "c:/Users/lettn/OneDrive/Documentos/GitHub/AED",
+      "program": "c:/Users/lettn/OneDrive/Documentos/GitHub/AED/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
