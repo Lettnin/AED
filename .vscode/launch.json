@@ -6,10 +6,10 @@
       "type": "cppdbg",
       "request": "launch",
       "args": [],
-      "stopAtEntry": false,
+      "stopAtEntry": true,
       "externalConsole": true,
       "cwd": "c:/Users/lettn/OneDrive/Documentos/GitHub/AED",
-      "program": "c:/Users/lettn/OneDrive/Documentos/GitHub/AED/build/Debug/outDebug",
+      "program": "${workspaceFolder}/a.out",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
