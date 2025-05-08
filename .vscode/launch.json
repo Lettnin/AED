@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": true,
       "externalConsole": true,
-      "cwd": "c:/Users/lettn/OneDrive/Documentos/GitHub/AED",
-      "program": "${workspaceFolder}/a.out",
+      "cwd": "G:/Meu Drive/GitHub/AED",
+      "program": "${workspaceFolder}/..exe",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
