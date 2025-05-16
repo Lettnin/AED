@@ -23,4 +23,8 @@
 |  |
 | ------- |
 | [2053-check-if-all-characters-have-equal-number-of-occurrences](https://github.com/Lettnin/AED/tree/master/2053-check-if-all-characters-have-equal-number-of-occurrences) |
+## Math
+|  |
+| ------- |
+| [2383-add-two-integers](https://github.com/Lettnin/AED/tree/master/2383-add-two-integers) |
 <!---LeetCode Topics End-->
