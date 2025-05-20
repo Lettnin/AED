@@ -1,3 +1,4 @@
+#include <stdbool.h>
 bool lemonadeChange(int *bills, int billsSize)
 {
   int nota5 = 0;
