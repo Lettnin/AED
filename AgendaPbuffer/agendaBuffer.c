@@ -27,12 +27,14 @@ int main()
 	int *TAMbuffer = (int *)((char *)pBuffer + sizeof(int));		 // TAMANHO DO MEU BUFFER
 	int *totalContatos = (int *)((char *)pBuffer + sizeof(int) * 2); // QUANTIDADE DE CONTATOS
 	int *aux = (int *)((char *)pBuffer + sizeof(int) * 3);			 // Ponteiro para saber a proxima posição do contato para armazenar la
+	int *contador = (int *)((char *)pBuffer + sizeof(int) * 4);
 
 	// zerei todos parametros para não puxar lixos como da memoria e causar bugs futuros
 	*menu = 0;
 	*TAMbuffer = sizeof(int) * 4;
 	*totalContatos = 0;
 	*aux = 0;
+	*contador = 0;
 
 	while (1)
 	{
@@ -72,6 +74,11 @@ int main()
 		default:
 			printf("Opção invalida\n");
 		}
+
+		TAMbuffer = (int *)((char *)pBuffer + sizeof(int));
+		totalContatos = (int *)((char *)pBuffer + sizeof(int) * 2);
+		aux = (int *)((char *)pBuffer + sizeof(int) * 3);
+		contador = (int *)pBuffer;
 	}
 }
 
@@ -93,7 +100,7 @@ void *AdicionarPessoa(void *pBuffer)
 	totalContatos = (int *)((char *)pBuffer + sizeof(int) * 2);
 	(*totalContatos)++;
 
-	int *tamanhoNome = (int *)(char *)(pBuffer + *TAMbuffer);
+	int *tamanhoNome = (int *)((char *)(pBuffer + *TAMbuffer));
 	*TAMbuffer += sizeof(int);
 
 	char *nome = (char *)(pBuffer + *TAMbuffer);
@@ -155,6 +162,8 @@ void *Remover(void *pBuffer)
 		exit(1);
 	}
 
+	*TAMbuffer += sizeof(char) * 100;
+
 	TAMbuffer = (int *)((char *)pBuffer + sizeof(int));
 	totalContatos = (int *)((char *)pBuffer + sizeof(int) * 2);
 	aux = (int *)((char *)pBuffer + sizeof(int) * 3);
@@ -162,7 +171,7 @@ void *Remover(void *pBuffer)
 
 	char *nomeParaRemover = (char *)pBuffer + *TAMbuffer;
 
-	printf("Qual nome deseja remover: ");
+	printf("\nQual nome deseja remover: ");
 	scanf(" %99[^\n]", nomeParaRemover);
 
 	char *atual = (char *)pBuffer + sizeof(int) * 4;
@@ -174,7 +183,7 @@ void *Remover(void *pBuffer)
 		atual += sizeof(int);
 
 		char *nome = atual;
-		atual += *tamanhoNome + 1;
+		atual += (*tamanhoNome) + 1;
 
 		int *idade = (int *)atual;
 		atual += sizeof(int);
@@ -183,7 +192,7 @@ void *Remover(void *pBuffer)
 		atual += sizeof(int);
 
 		char *email = atual;
-		atual += *tamanhoEmail + 1;
+		atual += (*tamanhoEmail) + 1;
 
 		if (strcmp(nome, nomeParaRemover) == 0)
 		{
@@ -208,6 +217,8 @@ void *Remover(void *pBuffer)
 			totalContatos = (int *)((char *)pBuffer + sizeof(int) * 2);
 			aux = (int *)((char *)pBuffer + sizeof(int) * 3);
 			contador = (int *)pBuffer;
+
+			break; // Sai do loop após remover o contato
 		}
 	}
 	return pBuffer;
@@ -240,7 +251,7 @@ void *Buscar(void *pBuffer)
 
 	char *nomeParaBuscar = (char *)pBuffer + *TAMbuffer;
 
-	printf("Qual nome voce deseja procurar na sua agenda: ");
+	printf("\nQual nome voce deseja procurar na sua agenda: ");
 	scanf(" %99[^\n]", nomeParaBuscar);
 
 	char *atual = (char *)pBuffer + sizeof(int) * 4;
@@ -252,7 +263,7 @@ void *Buscar(void *pBuffer)
 		atual += sizeof(int);
 
 		char *nome = atual;
-		atual += *tamanhoNome + 1;
+		atual += (*tamanhoNome) + 1;
 
 		int *idade = (int *)atual;
 		atual += sizeof(int);
@@ -261,7 +272,7 @@ void *Buscar(void *pBuffer)
 		atual += sizeof(int);
 
 		char *email = atual;
-		atual += *tamanhoEmail + 1;
+		atual += (*tamanhoEmail) + 1;
 		if (strcmp(nome, nomeParaBuscar) == 0)
 		{
 			printf("--------------------\n");
