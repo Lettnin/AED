@@ -13,7 +13,7 @@ int main()
 	void *pBuffer = NULL;
 
 	// Aloco 4 ints para o tamanho do meu buffer inicialmente 4*4 = 16 bytes
-	pBuffer = malloc(sizeof(int *) * 4);
+	pBuffer = malloc(sizeof(int *) * 5);
 
 	if (!pBuffer)
 	{
@@ -21,23 +21,19 @@ int main()
 		exit(1);
 	}
 
-	// crio as caixinhas para o meu menu, guardar quantidade de contatos da agenda,
-	// o meu tamanho atual do buffer e um ponteiro para saber a proxima posição vazia
-	int *menu = (int *)((char *)pBuffer + 0);						 // Menu
-	int *TAMbuffer = (int *)((char *)pBuffer + sizeof(int));		 // TAMANHO DO MEU BUFFER
-	int *totalContatos = (int *)((char *)pBuffer + sizeof(int) * 2); // QUANTIDADE DE CONTATOS
-	int *aux = (int *)((char *)pBuffer + sizeof(int) * 3);			 // Ponteiro para saber a proxima posição do contato para armazenar la
-	int *contador = (int *)((char *)pBuffer + sizeof(int) * 4);
-
-	// zerei todos parametros para não puxar lixos como da memoria e causar bugs futuros
-	*menu = 0;
-	*TAMbuffer = sizeof(int) * 4;
-	*totalContatos = 0;
-	*aux = 0;
-	*contador = 0;
+	// Inicializa os ponteiros e valores uma vez
+	*(int *)((char *)pBuffer + 0) = 0;						   // menu
+	*(int *)((char *)pBuffer + sizeof(int)) = sizeof(int) * 5; // TAMbuffer
+	*(int *)((char *)pBuffer + sizeof(int) * 2) = 0;		   // totalContatos
+	*(int *)((char *)pBuffer + sizeof(int) * 3) = 0;		   // aux
+	*(int *)((char *)pBuffer + sizeof(int) * 4) = 0;		   // contador
 
 	while (1)
 	{
+		int *menu = (int *)pBuffer;
+		int *TAMbuffer = (int *)((char *)pBuffer + sizeof(int));
+		int *totalContatos = (int *)((char *)pBuffer + sizeof(int) * 2);
+
 		printf("\n-------- MENU -------\n");
 		printf("|1| Adicionar Pessoa\n");
 		printf("|2| Remover Pessoa\n");
@@ -74,36 +70,28 @@ int main()
 		default:
 			printf("Opção invalida\n");
 		}
-
-		TAMbuffer = (int *)((char *)pBuffer + sizeof(int));
-		totalContatos = (int *)((char *)pBuffer + sizeof(int) * 2);
-		aux = (int *)((char *)pBuffer + sizeof(int) * 3);
-		contador = (int *)pBuffer;
 	}
 }
 
 void *AdicionarPessoa(void *pBuffer)
 {
-	int *TAMbuffer = (int *)((char *)pBuffer + sizeof(int));		 // posição 1: tamanho usado do buffer
-	int *totalContatos = (int *)((char *)pBuffer + sizeof(int) * 2); // posição 3: offset do próximo contato
+	int *TAMbuffer = (int *)((char *)pBuffer + sizeof(int)); // posição 1: tamanho usado do buffer
 
 	// Garantir espaço para novo contato:
-	pBuffer = realloc(pBuffer, *TAMbuffer + sizeof(char *) * 175 + sizeof(int) * 3);
+	pBuffer = realloc(pBuffer, *TAMbuffer + 175);
 	if (!pBuffer)
 	{
 		printf("ERRO AO REALOCAR MEMORIA\n");
 		exit(1);
 	}
 
-	// Atualizar ponteiros após realloc
 	TAMbuffer = (int *)((char *)pBuffer + sizeof(int));
-	totalContatos = (int *)((char *)pBuffer + sizeof(int) * 2);
-	(*totalContatos)++;
+	int *totalContatos = (int *)((char *)pBuffer + sizeof(int) * 2);
 
 	int *tamanhoNome = (int *)((char *)(pBuffer + *TAMbuffer));
 	*TAMbuffer += sizeof(int);
 
-	char *nome = (char *)(pBuffer + *TAMbuffer);
+	char *nome = (char *)pBuffer + *TAMbuffer;
 
 	// Ler nome
 	printf("Digite seu Nome: ");
@@ -122,7 +110,7 @@ void *AdicionarPessoa(void *pBuffer)
 	int *tamanhoEmail = (int *)(char *)(pBuffer + *TAMbuffer);
 	*TAMbuffer += sizeof(int);
 
-	char *email = (char *)(pBuffer + *TAMbuffer);
+	char *email = (char *)pBuffer + *TAMbuffer;
 
 	// Ler email
 	printf("Digite o email: ");
@@ -137,7 +125,8 @@ void *AdicionarPessoa(void *pBuffer)
 		exit(1);
 	}
 
-	TAMbuffer = (int *)((char *)pBuffer + sizeof(int));
+	totalContatos = (int *)((char *)pBuffer + sizeof(int) * 2);
+	(*totalContatos)++;
 
 	return pBuffer;
 }
@@ -147,34 +136,35 @@ void *Remover(void *pBuffer)
 	int *TAMbuffer = (int *)((char *)pBuffer + sizeof(int));
 	int *totalContatos = (int *)((char *)pBuffer + sizeof(int) * 2);
 	int *aux = (int *)((char *)pBuffer + sizeof(int) * 3);
-	int *contador = (int *)pBuffer;
+	int *contador = (int *)((char *)pBuffer + sizeof(int) * 4);
 
 	if (*totalContatos <= 0)
 	{
-		printf("Agenda Vazia\n");
+		printf("AGENDA VAZIA\n");
 		return pBuffer;
 	}
 
-	pBuffer = realloc(pBuffer, *TAMbuffer + sizeof(char) * 100);
+	*contador = *TAMbuffer;
+
+	pBuffer = realloc(pBuffer, *contador + 100);
 	if (!pBuffer)
 	{
 		printf("ERRO AO ALOCAR MEMORIA\n");
 		exit(1);
 	}
 
-	*TAMbuffer += sizeof(char) * 100;
-
 	TAMbuffer = (int *)((char *)pBuffer + sizeof(int));
 	totalContatos = (int *)((char *)pBuffer + sizeof(int) * 2);
 	aux = (int *)((char *)pBuffer + sizeof(int) * 3);
-	contador = (int *)pBuffer;
+	contador = (int *)((char *)pBuffer + sizeof(int) * 4);
 
-	char *nomeParaRemover = (char *)pBuffer + *TAMbuffer;
+	char *nomeParaRemover = (char *)pBuffer + *contador;
 
 	printf("\nQual nome deseja remover: ");
 	scanf(" %99[^\n]", nomeParaRemover);
 
-	char *atual = (char *)pBuffer + sizeof(int) * 4;
+	char *atual = (char *)pBuffer + sizeof(int) * 5;
+
 	for (*aux = 0; *aux < *totalContatos; (*aux)++)
 	{
 		char *InicioContatos = atual;
@@ -196,12 +186,13 @@ void *Remover(void *pBuffer)
 
 		if (strcmp(nome, nomeParaRemover) == 0)
 		{
-			*contador = (sizeof(int) + (*tamanhoNome + 1) + sizeof(int) + sizeof(int) + (*tamanhoEmail + 1));
+			memmove(InicioContatos, atual, (*contador) - ((char *)atual - (char *)pBuffer));
 
-			memmove(InicioContatos, atual, ((char *)pBuffer + *TAMbuffer) - atual);
+			*TAMbuffer -= ((char *)atual - (char *)InicioContatos);
 
-			*TAMbuffer -= *contador;
 			(*totalContatos)--;
+
+			printf("\nContato removido com sucesso\n");
 
 			pBuffer = realloc(pBuffer, *TAMbuffer);
 			if (!pBuffer)
@@ -209,18 +200,21 @@ void *Remover(void *pBuffer)
 				printf("ERRO AO ALOCAR MEMORIA\n");
 				exit(1);
 			}
-
-			printf("Contato removido com sucesso\n");
-
-			// Atualiza os ponteiros após realloc
-			TAMbuffer = (int *)((char *)pBuffer + sizeof(int));
-			totalContatos = (int *)((char *)pBuffer + sizeof(int) * 2);
-			aux = (int *)((char *)pBuffer + sizeof(int) * 3);
-			contador = (int *)pBuffer;
-
-			break; // Sai do loop após remover o contato
+			return pBuffer;
 		}
 	}
+
+	// Se o loop terminar, o contato não foi encontrado
+	printf("Contato nao encontrado.\n");
+
+	// Encolhe o buffer de volta ao seu tamanho ORIGINAL, descartando o espaço temporário
+	pBuffer = realloc(pBuffer, *contador);
+	if (!pBuffer)
+	{
+		printf("ERRO AO ALOCAR MEMORIA\n");
+		exit(1);
+	}
+
 	return pBuffer;
 }
 
@@ -233,7 +227,7 @@ void *Buscar(void *pBuffer)
 
 	if (*totalContatos <= 0)
 	{
-		printf("Agenda Vazia\n");
+		printf("AGENDA VAZIA\n");
 		return pBuffer;
 	}
 
@@ -254,7 +248,7 @@ void *Buscar(void *pBuffer)
 	printf("\nQual nome voce deseja procurar na sua agenda: ");
 	scanf(" %99[^\n]", nomeParaBuscar);
 
-	char *atual = (char *)pBuffer + sizeof(int) * 4;
+	char *atual = (char *)pBuffer + sizeof(int) * 5;
 	for (*aux = 0; *aux < *totalContatos; (*aux)++)
 	{
 		char *InicioContatos = atual;
@@ -319,7 +313,7 @@ void *Listar(void *pBuffer)
 		return pBuffer;
 	}
 
-	char *lista = (char *)(pBuffer + sizeof(int) * 4);
+	char *lista = (char *)(pBuffer + sizeof(int) * 5);
 	for (*aux = 0; *aux < *totalContatos; (*aux)++)
 	{
 		int *tamanhoNome = (int *)lista;

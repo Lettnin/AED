@@ -68,6 +68,7 @@
     "editor.defaultFormatter": "ms-vscode.cpptools",
     "editor.insertSpaces": false,
     "editor.tabSize": 4,
+		"editor.fontSize": 16,
     "editor.formatOnSave": true
   }
 }
