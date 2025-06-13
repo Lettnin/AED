@@ -60,5 +60,14 @@
     "*.embeddedhtml": "html",
     "SLA.C": "cpp",
     "string.h": "c"
+  },
+
+  "editor.detectIndentation": false,
+
+  "[c]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools",
+    "editor.insertSpaces": false,
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true
   }
 }
