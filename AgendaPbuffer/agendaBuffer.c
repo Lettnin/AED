@@ -9,11 +9,9 @@ void *Listar(void *pBuffer);
 
 int main()
 {
-	// Zerei o pBuffer para nao pegar lixo
 	void *pBuffer = NULL;
 
-	// Aloco 4 ints para o tamanho do meu buffer inicialmente 4*4 = 16 bytes
-	pBuffer = malloc(sizeof(int *) * 5);
+	pBuffer = malloc(sizeof(int) * 5);
 
 	if (!pBuffer)
 	{
@@ -21,7 +19,6 @@ int main()
 		exit(1);
 	}
 
-	// Inicializa os ponteiros e valores uma vez
 	*(int *)((char *)pBuffer + 0) = 0;						   // menu
 	*(int *)((char *)pBuffer + sizeof(int)) = sizeof(int) * 5; // TAMbuffer
 	*(int *)((char *)pBuffer + sizeof(int) * 2) = 0;		   // totalContatos
@@ -42,7 +39,7 @@ int main()
 		printf("|5| Sair\n");
 		printf("--------------------\n");
 		printf("Escolha uma opção: ");
-		scanf("%d", menu); // menu
+		scanf("%d", menu);
 
 		switch (*menu)
 		{
@@ -75,10 +72,9 @@ int main()
 
 void *AdicionarPessoa(void *pBuffer)
 {
-	int *TAMbuffer = (int *)((char *)pBuffer + sizeof(int)); // posição 1: tamanho usado do buffer
+	int *TAMbuffer = (int *)((char *)pBuffer + sizeof(int));
 
-	// Garantir espaço para novo contato:
-	pBuffer = realloc(pBuffer, *TAMbuffer + 175);
+	pBuffer = realloc(pBuffer, *TAMbuffer + 179);
 	if (!pBuffer)
 	{
 		printf("ERRO AO REALOCAR MEMORIA\n");
@@ -93,7 +89,6 @@ void *AdicionarPessoa(void *pBuffer)
 
 	char *nome = (char *)pBuffer + *TAMbuffer;
 
-	// Ler nome
 	printf("Digite seu Nome: ");
 	scanf(" %74[^\n]%*c", nome);
 
@@ -102,7 +97,6 @@ void *AdicionarPessoa(void *pBuffer)
 
 	int *idade = (int *)(char *)(pBuffer + *TAMbuffer);
 
-	// Ler idade
 	printf("Digite sua Idade: ");
 	scanf("%d%*c", idade);
 	*TAMbuffer += sizeof(int);
@@ -112,7 +106,6 @@ void *AdicionarPessoa(void *pBuffer)
 
 	char *email = (char *)pBuffer + *TAMbuffer;
 
-	// Ler email
 	printf("Digite o email: ");
 	scanf(" %99[^\n]%*c", email);
 	*tamanhoEmail = strlen(email);
@@ -161,7 +154,7 @@ void *Remover(void *pBuffer)
 	char *nomeParaRemover = (char *)pBuffer + *contador;
 
 	printf("\nQual nome deseja remover: ");
-	scanf(" %99[^\n]", nomeParaRemover);
+	scanf(" %99[^\n]%*c", nomeParaRemover);
 
 	char *atual = (char *)pBuffer + sizeof(int) * 5;
 
@@ -204,10 +197,8 @@ void *Remover(void *pBuffer)
 		}
 	}
 
-	// Se o loop terminar, o contato não foi encontrado
 	printf("Contato nao encontrado.\n");
 
-	// Encolhe o buffer de volta ao seu tamanho ORIGINAL, descartando o espaço temporário
 	pBuffer = realloc(pBuffer, *contador);
 	if (!pBuffer)
 	{
@@ -246,7 +237,7 @@ void *Buscar(void *pBuffer)
 	char *nomeParaBuscar = (char *)pBuffer + *TAMbuffer;
 
 	printf("\nQual nome voce deseja procurar na sua agenda: ");
-	scanf(" %99[^\n]", nomeParaBuscar);
+	scanf(" %99[^\n]%*c", nomeParaBuscar);
 
 	char *atual = (char *)pBuffer + sizeof(int) * 5;
 	for (*aux = 0; *aux < *totalContatos; (*aux)++)
