@@ -57,10 +57,11 @@
   "C_Cpp_Runner.useLinkTimeOptimization": false,
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
-    "*.embeddedhtml": "html",
-    "SLA.C": "cpp",
-    "string.h": "c"
-  },
+		"*.embeddedhtml": "html",
+		"SLA.C": "cpp",
+		"string.h": "c",
+		"stdlib.h": "c"
+	},
 
   "editor.detectIndentation": false,
 
