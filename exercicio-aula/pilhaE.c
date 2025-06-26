@@ -20,7 +20,7 @@ typedef struct Pilha
 void reset(Pilha *pilha);
 bool fullpilha(Pilha *pilha);
 bool vazia(Pilha *pilha);
-void push(Pilha *pilha, Aluno *item);
+bool push(Pilha *pilha, Aluno *item);
 bool pop(Pilha *pilha, Aluno *aluno);
 void listar(Pilha *pilha);
 
@@ -70,7 +70,7 @@ bool fullpilha(Pilha *pilha)
 	return pilha->topo == MAX;
 }
 
-void push(Pilha *pilha, Aluno *item)
+bool push(Pilha *pilha, Aluno *item)
 {
 	if (!fullpilha(pilha))
 	{
