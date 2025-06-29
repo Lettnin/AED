@@ -60,7 +60,8 @@
 		"*.embeddedhtml": "html",
 		"SLA.C": "cpp",
 		"string.h": "c",
-		"stdlib.h": "c"
+		"stdlib.h": "c",
+		"stdbool.h": "c"
 	},
 
   "editor.detectIndentation": false,
