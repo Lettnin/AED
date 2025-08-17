@@ -13,33 +13,42 @@
 //  Saída: true
 //  Explicação: Há três padrões 132 na sequência: [-1, 3, 2], [-1, 3, 0] e [-1, 2, 0].
 
-#include <stdbool.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 bool find132pattern(int *nums, int numsSize)
 {
-	for (int i = 0; i < numsSize - 2; i++)
+	if (numsSize < 3)
+		return false;
+
+	int pilha[numsSize];
+	int topo = -1;
+
+	bool temValorDireita = false;
+	int valorDireita = 0;
+
+	for (int i = numsSize - 1; i >= 0; i--)
 	{
-		for (int j = i + 1; j < numsSize - 1; j++)
+		if (temValorDireita && nums[i] < valorDireita)
 		{
-			if (nums[i] < nums[j])
-			{
-				for (int k = j + 1; k < numsSize; k++)
-				{
-					if (i < j && j < k && nums[i] < nums[k] && nums[k] < nums[j])
-					{
-						return true;
-					}
-				}
-			}
+			return true;
 		}
+
+		while (topo >= 0 && pilha[topo] < nums[i])
+		{
+			valorDireita = pilha[topo--];
+			temValorDireita = true;
+		}
+
+		pilha[++topo] = nums[i];
 	}
+
 	return false;
 }
 
 int main()
 {
-	int nums[] = {1, 2, 3, 4};
+	int nums[] = {3, 1, 4, 2};
 	int numsSize = sizeof(nums) / sizeof(nums[0]);
 
 	bool result = find132pattern(nums, numsSize);
