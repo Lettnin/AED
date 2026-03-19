@@ -1,19 +1,33 @@
-nome : samuel lettnin da rosa
-turma: m2
+# Desafio: Agenda com Buffer de Memória Dinâmico
+**Disciplina:** Algoritmos e Estruturas de Dados | **Turma:** M2  
+**Desenvolvedor:** Samuel Lettnin da Rosa
 
-Faça uma agenda com o seguinte menu:
-1- Adicionar Pessoa (Nome, Idade, email)
-2- Remover Pessoa
-3- Buscar Pessoa
-4- Listar todos
-5- Sair
- 
-O desafio é não poder criar variáveis e sim um buffer de memória (void *pBuffer). 
-Nisso vocês terão que fazer o trabalho que o Sistema Operacional faz para vocês ao organizar a memória.
- 
-Regras:
-Nenhuma variável pode ser declarada em todo o programa, somente ponteiros. 
-Todos os dados do programa devem ser guardados dentro do pBuffer.
-Nem mesmo como parâmetro de função. Só ponteiros que apontam para dentro do pBuffer.
-Exemplo do que não pode: int c; char a; int v[10];  void Funcao(int parametro)
-Não pode usar struct em todo o programa.
+---
+
+## 📝 Descrição do Projeto
+O objetivo deste projeto é desenvolver uma agenda de contatos em C, simulando o gerenciamento de memória que um Sistema Operacional realiza. O diferencial técnico é a proibição total do uso de variáveis locais, globais ou estruturas (`struct`).
+
+### 🛠️ Funcionalidades (Menu)
+1. **Adicionar Pessoa:** Registra Nome, Idade e E-mail.
+2. **Remover Pessoa:** Exclui um contato do buffer.
+3. **Buscar Pessoa:** Localiza um registro específico.
+4. **Listar todos:** Exibe todos os contatos armazenados.
+5. **Sair:** Encerra o programa e libera a memória.
+
+---
+
+## ⚠️ Regras de Implementação (Restrições)
+Para simular o baixo nível, o projeto segue as seguintes diretrizes estritas:
+
+*   **Buffer Único:** Todo e qualquer dado deve ser armazenado em um único `void *pBuffer`.
+*   **Proibido Variáveis:** Nenhuma variável (como `int c`, `char a`, etc.) pode ser declarada em qualquer parte do programa.
+*   **Apenas Ponteiros:** O controle do fluxo e armazenamento deve ser feito exclusivamente via ponteiros que apontam para dentro do `pBuffer`.
+*   **Sem Parâmetros de Valor:** Funções não podem receber cópias de valores, apenas ponteiros para endereços no buffer.
+*   **Sem Structs:** É proibido o uso de `struct` para organizar os dados. A organização deve ser feita via aritmética de ponteiros manualmente.
+
+---
+
+## 🚀 Como Executar
+1. Compile o arquivo:
+   ```bash
+   gcc -o agenda main.c
